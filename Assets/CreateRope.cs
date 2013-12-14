@@ -77,7 +77,7 @@ public class CreateRope : MonoBehaviour {
 
 			b.rigidbody.AddForceAtPosition(
 				distance.normalized * Mathf.Pow(distance.magnitude, 2),
-			    a.transform.TransformPoint(new Vector3(0,0, -(segmentLengthScale+segmentSeperation)/2)));
+			    b.transform.TransformPoint(new Vector3(0,0, -(segmentLengthScale+segmentSeperation)/2)));
 		}
 	}
 }
