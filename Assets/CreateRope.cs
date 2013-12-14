@@ -42,7 +42,8 @@ public class CreateRope : MonoBehaviour {
 		GameObject start = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		start.transform.position = position;
 		start.transform.localScale = new Vector3(ropeThicknessScale,ropeThicknessScale,segmentLengthScale);
-		start.AddComponent<Rigidbody>().isKinematic = true;
+		start.AddComponent<Rigidbody>().useGravity = false;
+
 		start.layer = 8;
 		ropePieces[0] = start;
 		GameObject newRope;
@@ -52,7 +53,7 @@ public class CreateRope : MonoBehaviour {
 			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLengthScale+segmentSeperation));
 			//incoming magic layer number
 			newRope.layer = 8;
-			newRope.AddComponent<Rigidbody>();
+			newRope.AddComponent<Rigidbody>().useGravity = false;
 			ropePieces[i] = newRope;
 		}
 	}
@@ -67,13 +68,16 @@ public class CreateRope : MonoBehaviour {
 				new Vector3(0,0, (segmentLengthScale+segmentSeperation)/2)) - 
 			    b.transform.TransformPoint(
 				new Vector3(0,0, -(segmentLengthScale+segmentSeperation)/2));
-			Debug.Log (distance.normalized * Mathf.Sqrt((distance.magnitude/2)));
+
+			Debug.Log (-distance.normalized * Mathf.Pow(distance.magnitude, 3));
+
 			a.rigidbody.AddForceAtPosition(
 				-distance.normalized * Mathf.Pow(distance.magnitude, 2),
-			    new Vector3(0,0, (segmentLengthScale+segmentSeperation)/2));
+			    a.transform.TransformPoint(new Vector3(0,0, (segmentLengthScale+segmentSeperation)/2)));
+
 			b.rigidbody.AddForceAtPosition(
-				distance.normalized * Mathf.Pow(distance.magnitude,2),
-			    new Vector3(0,0, -(segmentLengthScale+segmentSeperation)/2));
+				distance.normalized * Mathf.Pow(distance.magnitude, 2),
+			    a.transform.TransformPoint(new Vector3(0,0, -(segmentLengthScale+segmentSeperation)/2)));
 		}
 	}
 }
