@@ -627,9 +627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21ff774cd8b7b0478f3750aae54beab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionToAfix: {x: .5, y: 0, z: .5}
-  arbitraryDistanceLimit: 4
-  thisCamera: {fileID: 1173558228}
 --- !u!1 &1173558226
 GameObject:
   m_ObjectHideFlags: 0
