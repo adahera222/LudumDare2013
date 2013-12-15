@@ -18,11 +18,6 @@ public class RopeGrabber : MonoBehaviour {
 		Rigidbody b = cursorBullshit.AddComponent<Rigidbody>();
 		b.isKinematic = true;
 		cursorBullshit.layer = 10;
-		GameObject cursorRender = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		cursorRender.collider.enabled=false;
-		cursorRender.transform.parent = cursorBullshit.transform;
-		cursorRender.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
-		cursorRender.transform.localPosition = Vector3.zero;
 		cursorBullshit.transform.parent = thisCamera.transform;
 		cursorBullshit.transform.localPosition = positionToAfix;
 		jointDicks = null;
@@ -31,8 +26,9 @@ public class RopeGrabber : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Screen.showCursor = false;
-		if(Input.GetMouseButtonDown(0) && jointDicks == null) {
-			Ray ray = thisCamera.ScreenPointToRay (Input.mousePosition);
+		if(Input.GetMouseButtonDown(0) && jointDicks == null)
+		{
+			Ray ray = thisCamera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2));
 			RaycastHit hit;
 			if(Physics.Raycast (ray,out hit))
 			{
@@ -51,8 +47,13 @@ public class RopeGrabber : MonoBehaviour {
 					jointDicks.breakTorque = 10000f;
 				}
 			}
-			if(jointDicks != null)
-				Debug.DrawLine(jointDicks.transform.position, jointDicks.connectedBody.transform.position);
+
+		}
+		if(jointDicks != null && Input.GetMouseButtonUp (0))
+		{
+			Debug.Log ("object should be dropped");
+			Destroy(jointDicks);
+			jointDicks = null;
 		}
 	}
 }
