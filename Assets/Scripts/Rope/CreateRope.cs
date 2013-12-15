@@ -9,23 +9,24 @@ public class CreateRope : MonoBehaviour {
 	public float ropeThicknessScale = .05f;
 	public float segmentSeperation = 0f;
 
+
 	private GameObject[] ropePieces;
 
 	void Start() {
 		ropePieces = new GameObject[ropeLength];
-		GameObject start = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		GameObject start = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		start.transform.position = position;
 		start.transform.localScale = new Vector3(ropeThicknessScale,ropeThicknessScale,segmentLengthScale);
 		Rigidbody body = start.AddComponent<Rigidbody>();
 		body.mass = Mathf.Pow(ropeLength,-1);
-		body.WakeUp();
-		//body.isKinematic = true;
-
+		body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+		start.collider.material = (PhysicMaterial) Resources.Load("Physics/Rope");
 		start.layer = 8;
+
 		ropePieces[0] = start;
 		GameObject newRope;
 		for(int i = 1; i < ropeLength; i++) {
-			newRope = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			newRope = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			newRope.transform.localScale = new Vector3(ropeThicknessScale,ropeThicknessScale,segmentLengthScale);
 			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLengthScale));
 
@@ -33,7 +34,8 @@ public class CreateRope : MonoBehaviour {
 			newRope.layer = 8;
 			body = newRope.AddComponent<Rigidbody>();
 		    body.mass = Mathf.Pow(ropeLength,-1);
-			body.WakeUp();
+			body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+			newRope.collider.material = (PhysicMaterial) Resources.Load("Physics/Rope");
 
 			ConfigurableJoint j = newRope.AddComponent<ConfigurableJoint>();
 			j.connectedBody = start.rigidbody;
@@ -52,6 +54,14 @@ public class CreateRope : MonoBehaviour {
 			start = newRope;
 
 			ropePieces[i] = newRope;
+		}
+		for(int i = 0; i < ropeLength; i++) {
+			GameObject child = new GameObject();
+			child.transform.parent = ropePieces[i].transform;
+			SphereCollider cap = child.AddComponent<SphereCollider>();
+			cap.center = ropePieces[i].transform.position;
+			cap.radius = segmentLengthScale * 1.1f;
+			child.layer = 9;
 		}
 	}
 

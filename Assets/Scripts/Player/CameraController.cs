@@ -17,4 +17,8 @@ public class CameraController : MonoBehaviour {
 		else
 			cameraref.localPosition = new Vector3(0f, 0.5f, 0f);
 	}
+
+	void OnGUI () {
+		GUI.Box(new Rect(Screen.width / 2 - 1, Screen.height / 2 - 1, 1, 1), "");
+	}
 }
