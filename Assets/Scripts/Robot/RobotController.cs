@@ -5,20 +5,22 @@ using System.Collections.Generic;
 public class RobotController : MonoBehaviour {
 	public List<Transform> pathNodes= new List<Transform>();
 	public float movespeed;
-	private float stopSpeed;
+	public float sight;
+	private float vel;
+	private float lastPos;
+	private float currentPos;
+	private float stopForce;
+	private float moveForce;
 	private int nodeNum = 0;
-	bool playerDetected= false;
 	enum States {Patrolling,Stop,Turning,Chase,Return};
 	States state = States.Turning;
 
 	// START AND FIXED FUNCTIONS
 	void Start () {
-		stopSpeed = movespeed;
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate() {
 
-		//PatrolRobit();
 		switch(state)
 		{
 			case States.Patrolling:
@@ -40,58 +42,60 @@ public class RobotController : MonoBehaviour {
 	}
 
 	//STATES FOR A ROBITS
-	void PatrolRobit(){
-		//Debug.Log("Made it to Patrol");
+	void PatrolRobit() {
 		//EDGE CONDIONTION
 		float distance = moveVector(pathNodes[nodeNum]).magnitude;
-		if(distance < 1f){
+		//float vel = rigidbody.velocity.magnitude;
+		//float stopDistance= Mathf.Pow(vel,2f)/(2*movespeed);
+		if(distance < 0.35f){
 			state = States.Stop;
+			//Debug.Log("velocity of stop is :"+rigidbody.velocity);
 		}
-		else if(playerDetected){
+		else if(seePlayer()) {
 			state = States.Chase;
 		}
-		else{
+		else {
 			//ACTION
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
 			moveDir.Normalize();
-			stopSpeed = movespeed;
+			vel = rigidbody.velocity.magnitude;
+			//moveForce=Mathf.Pow(movespeed,2f)-Mathf.Pow(velocity,2f)/moveddistance ;
+			moveForce = movespeed - vel;
 			rigidbody.AddRelativeForce(moveDir * movespeed);
 		}
 	}
 
-	void StopRobit(){
-		//Debug.Log("Made it to Stop");
+	void StopRobit() {
 		//EDGE CONDIONTION
 		float distance = moveVector(pathNodes[nodeNum]).magnitude;
-		if(distance < 0.5f){
+		if(distance < 0.1f) {
 			state = States.Turning;
 			NextNode();
 		}
-		else if(playerDetected){
+		else if(seePlayer()) {
 			state = States.Chase;
 		}
-		else{
+		else {
 			//ACTION
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
 			moveDir.Normalize();
-			stopSpeed = stopSpeed / 1.05f;
-			rigidbody.AddRelativeForce(moveDir * stopSpeed);
+			vel = rigidbody.velocity.magnitude;
+			stopForce = -Mathf.Pow(vel,2f)/(2*Mathf.Abs(distance));
+			rigidbody.AddRelativeForce(moveDir * stopForce);
 		}
 	
 	}
 	
-	void TurnRobit(){
-		//Debug.Log("Made it to Turn");
+	void TurnRobit() {
 		//EDGE CONDIONTION
-		float angle= turnAngle(pathNodes[nodeNum]);
-		//Debug.Log("angle is " + angle);
-		if(angle < 2f){
+		float angle = turnAngle(pathNodes[nodeNum]);
+		if(angle < 2f) {
 			state = States.Patrolling;
 		}
-		else if(playerDetected){
+		else if(seePlayer()) {
 			state = States.Chase;
 		}
-		else{
+		else {
 			//ACTION
 			transform.RotateAround(transform.position, Vector3.up, 2f);
 		}
@@ -99,34 +103,51 @@ public class RobotController : MonoBehaviour {
 	}
 
 	// IGNORE FOR NOW!
-	void ChasePlayer(){
+	void ChasePlayer() {
+		Debug.Log("I SEE YOU! :D");
 	}
 
-	void ReturnRobits(){
+	void ReturnRobits() {
 	}
 
 	//HELPING FUNCTIONS FOR THINGS
-	void NextNode(){
-		if (nodeNum == pathNodes.Count-1){
+	void NextNode() {
+		if (nodeNum == pathNodes.Count - 1){
 			nodeNum = 0;
 		}
-		else{
+		else {
 			nodeNum++;
 		}
 	}
 
-	Vector3 moveVector(Transform node){
-		Vector3 moveDir=node.position-transform.position;
+	Vector3 moveVector(Transform node) {
+		Vector3 moveDir = node.position - transform.position;
 		moveDir.y = 0;
 		moveDir = transform.InverseTransformDirection(moveDir);
 		return moveDir;
 	}
 
-	float turnAngle(Transform node){
-		Vector3 turnDir=node.position-transform.position;
+	float turnAngle(Transform node) {
+		Vector3 turnDir = node.position - transform.position;
 		turnDir.y = 0;
 		turnDir = transform.InverseTransformDirection(turnDir);
 		float turnAngle = Vector3.Angle(Vector3.forward,turnDir);
 		return turnAngle;
+	}
+
+	bool seePlayer() {
+		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
+		turnDir.y = 0;
+		turnDir = transform.InverseTransformDirection(turnDir);
+		sight = Vector3.Angle(Vector3.forward,turnDir);
+
+		if (sight < 15)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
