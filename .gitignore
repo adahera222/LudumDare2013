@@ -108,3 +108,7 @@ Backup*/
 UpgradeLog*.XML
 
 Temp/
+Library/ScriptAssemblies/
+Library/assetDatabase3
+Library/guidmapper
+Blend/
