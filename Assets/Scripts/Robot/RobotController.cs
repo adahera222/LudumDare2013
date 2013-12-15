@@ -141,7 +141,7 @@ public class RobotController : MonoBehaviour {
 		turnDir = transform.InverseTransformDirection(turnDir);
 		sight = Vector3.Angle(Vector3.forward,turnDir);
 
-		if (sight < 15)
+		if (sight < 1)
 		{
 			return true;
 		}
