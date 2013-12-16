@@ -109,7 +109,6 @@ UpgradeLog*.XML
 
 Temp/
 Library/ScriptAssemblies/
-Library/guidmapper
 Blend/
 Assembly-CSharp-vs.csproj
 Assembly-CSharp.csproj

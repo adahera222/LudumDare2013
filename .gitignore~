@@ -109,10 +109,8 @@ UpgradeLog*.XML
 
 Temp/
 Library/ScriptAssemblies/
-Library/assetDatabase3
 Library/guidmapper
 Blend/
-Library/
 Assembly-CSharp-vs.csproj
 Assembly-CSharp.csproj
 LudumDare2013-csharp.sln
