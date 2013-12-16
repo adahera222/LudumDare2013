@@ -19,12 +19,11 @@ public class RopeRenderer : MonoBehaviour {
 		tris = new List<int>();
 		uvs = new List<Vector2>();
 
-		gameObject.AddComponent<MeshRenderer>();
+		if(!GetComponent<MeshRenderer>()) gameObject.AddComponent<MeshRenderer>();
 		gameObject.AddComponent<MeshFilter>();
 
 		ropemesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = ropemesh;
-		//GetComponent<MeshRenderer>().materials[0] = (Material)Resources.Load("Models/Materials/Rope");
 	}
 
 	void LateUpdate () {
@@ -42,13 +41,16 @@ public class RopeRenderer : MonoBehaviour {
 			Vector3 startpoint = obj.transform.TransformPoint(0, 0, -(roperef.segmentLength / 2));
 			Vector3 endpoint = obj.transform.TransformPoint(0, 0, (roperef.segmentLength / 2));
 
-			vert.Add(startpoint + new Vector3(0f, RopeWidth / 2, 0f));
-			vert.Add(startpoint + new Vector3(0f, -(RopeWidth / 2), 0f));
-			vert.Add(endpoint + new Vector3(0f, RopeWidth / 2, 0f));
-			vert.Add(endpoint + new Vector3(0f, -(RopeWidth / 2), 0f));
+			Vector3 offset = new Vector3(0f, RopeWidth / 2, 0f);
+
+			vert.Add(startpoint + offset);
+			vert.Add(startpoint - offset);
+			vert.Add(endpoint + offset);
+			vert.Add(endpoint - offset);
 
 			//CONTINUE FROM LAST SEGMENT
 			if(i != 0) {
+				//FORWARD
 				tris.Add(trioffset - 2);
 				tris.Add(trioffset - 1);
 				tris.Add(trioffset + 1);
@@ -56,9 +58,19 @@ public class RopeRenderer : MonoBehaviour {
 				tris.Add(trioffset + 1);
 				tris.Add(trioffset);
 				tris.Add(trioffset - 2);
+
+				//BACKWARDS
+				tris.Add(trioffset + 1);
+				tris.Add(trioffset - 1);
+				tris.Add(trioffset - 2);
+				
+				tris.Add(trioffset - 2);
+				tris.Add(trioffset);
+				tris.Add(trioffset + 1);
 			}
 			
 			//THINGS IN THE MIDDLE
+			//FORWARD
 			tris.Add(trioffset);
 			tris.Add(trioffset + 1);
 			tris.Add(trioffset + 2);
@@ -66,6 +78,15 @@ public class RopeRenderer : MonoBehaviour {
 			tris.Add(trioffset + 1);
 			tris.Add(trioffset + 3);
 			tris.Add(trioffset + 2);
+
+			//BACKWARDS
+			tris.Add(trioffset + 2);
+			tris.Add(trioffset + 1);
+			tris.Add(trioffset);
+			
+			tris.Add(trioffset + 2);
+			tris.Add(trioffset + 3);
+			tris.Add(trioffset + 1);
 
 			uvs.Add(new Vector2(1,0));
 			uvs.Add(new Vector2(0,0));
