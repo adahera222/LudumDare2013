@@ -145,18 +145,22 @@ public class RobotController : MonoBehaviour {
 	}
 
 	bool seePlayer() {
-//		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
-//		turnDir.y = 0;
-//		turnDir = transform.InverseTransformDirection(turnDir);
-//		sight = Vector3.Angle(Vector3.left,turnDir);
-//
-//		if (sight < 1)
-//		{
-//			return true;
-//		}
-//		else
-//		{
+		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
+		turnDir.y = 0;
+//		float disToPlayer=turnDir.magnitude;
+		turnDir = transform.InverseTransformDirection(turnDir);
+		sight = Vector3.Angle(Vector3.left,turnDir);
+
+		Ray ray = new Ray(GameObject.Find("Player").transform.position, transform.position);
+		RaycastHit hit;
+
+		if (Physics.Raycast (ray, out hit))
+		{
+			if ((Mathf.Abs(sight)< 5) && hit.collider.gameObject.layer == 11)
+			{
+				return true;
+			}
+		}
 			return false;
-//		}
 	}
 }
