@@ -19,6 +19,9 @@ public class RopeRenderer : MonoBehaviour {
 		tris = new List<int>();
 		uvs = new List<Vector2>();
 
+		gameObject.AddComponent<MeshRenderer>();
+		gameObject.AddComponent<MeshFilter>();
+
 		ropemesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = ropemesh;
 	}
