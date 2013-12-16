@@ -78,7 +78,7 @@ public class CreateRope : MonoBehaviour {
 		}
 	}
 
-	/*void FixedUpdate() {
+	void FixedUpdate() {
 		GameObject  a;
 		GameObject b;
 
@@ -97,13 +97,6 @@ public class CreateRope : MonoBehaviour {
 			b.rigidbody.AddForceAtPosition(
 				distance.normalized * Mathf.Pow(distance.magnitude, 3)*30,
 			    b.transform.TransformPoint(new Vector3(0,0, -(segmentLength)/2)));
-		}
-	}*/
-	void Update()
-	{
-		for(int i = 0; i < ropePieces.Length - 1; i++)
-		{
-			Debug.DrawLine(ropePieces[i].transform.position, ropePieces[i+1].transform.position);
 		}
 	}
 

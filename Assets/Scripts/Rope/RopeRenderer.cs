@@ -24,9 +24,10 @@ public class RopeRenderer : MonoBehaviour {
 
 		ropemesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = ropemesh;
+		//GetComponent<MeshRenderer>().materials[0] = (Material)Resources.Load("Models/Materials/Rope");
 	}
 
-	void Update () {
+	void LateUpdate () {
 
 
 		vert.Clear();
@@ -38,8 +39,8 @@ public class RopeRenderer : MonoBehaviour {
 
 			int trioffset = vert.Count;
 
-			Vector3 startpoint = obj.transform.TransformPoint(0, 0, -(roperef.segmentLength));
-			Vector3 endpoint = obj.transform.TransformPoint(0, 0, (roperef.segmentLength));
+			Vector3 startpoint = obj.transform.TransformPoint(0, 0, -(roperef.segmentLength / 2));
+			Vector3 endpoint = obj.transform.TransformPoint(0, 0, (roperef.segmentLength / 2));
 
 			vert.Add(startpoint + new Vector3(0f, RopeWidth / 2, 0f));
 			vert.Add(startpoint + new Vector3(0f, -(RopeWidth / 2), 0f));
@@ -66,18 +67,21 @@ public class RopeRenderer : MonoBehaviour {
 			tris.Add(trioffset + 3);
 			tris.Add(trioffset + 2);
 
+			uvs.Add(new Vector2(1,0));
+			uvs.Add(new Vector2(0,0));
 			uvs.Add(new Vector2(1,1));
-			uvs.Add(new Vector2(1,1));
-			uvs.Add(new Vector2(1,1));
-			uvs.Add(new Vector2(1,1));
+			uvs.Add(new Vector2(0,1));
 		}
 
 		ropemesh.triangles = tris.ToArray();
 		ropemesh.vertices = vert.ToArray();
 		ropemesh.uv = uvs.ToArray();
 
+		ropemesh.RecalculateBounds();
+		ropemesh.RecalculateNormals();
+
 		//attach to filter
 
-		//GetComponent<MeshRenderer>().Render(0);
+		GetComponent<MeshRenderer>().Render(0);
 	}
 }
