@@ -35,8 +35,8 @@ public class RopeRenderer : MonoBehaviour {
 
 			int trioffset = vert.Count;
 
-			Vector3 startpoint = obj.transform.TransformPoint(0, 0, -(roperef.segmentLengthScale * 5));
-			Vector3 endpoint = obj.transform.TransformPoint(0, 0, (roperef.segmentLengthScale * 5));
+			Vector3 startpoint = obj.transform.TransformPoint(0, 0, -(roperef.segmentLength));
+			Vector3 endpoint = obj.transform.TransformPoint(0, 0, (roperef.segmentLength));
 
 			vert.Add(startpoint + new Vector3(0f, RopeWidth / 2, 0f));
 			vert.Add(startpoint + new Vector3(0f, -(RopeWidth / 2), 0f));
