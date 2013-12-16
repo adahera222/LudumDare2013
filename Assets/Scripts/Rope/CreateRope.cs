@@ -8,8 +8,12 @@ public class CreateRope : MonoBehaviour {
 	public float segmentLength = .25f;
 	public float ropeThickness = .1f;
 
+	private bool frontAttached;
+	private bool backAttached;
+
 	[HideInInspector]
 	public GameObject[] ropePieces;
+
 
 	void Start() {
 		Transform debug = new GameObject().transform;
@@ -52,9 +56,9 @@ public class CreateRope : MonoBehaviour {
 			j.connectedAnchor = new Vector3(0,0, segment.height/2);
 			j.anchor = new Vector3(0,0, -segment.height/2);
 
+
 			SoftJointLimit limit = new SoftJointLimit();
 			limit.damper = 50;
-			limit.limit = segmentSeperation;
 			limit.spring = 100;
 
 			j.linearLimit = limit;
@@ -100,18 +104,38 @@ public class CreateRope : MonoBehaviour {
 		}
 	}
 
+	//only for use when attaching, or things might break
 	public GameObject getRopeSegment(GameObject inRope)
 	{
-		for(int i = 1; i < ropePieces.Length/2; i++)
+		Debug.Log ("front " + frontAttached);
+		Debug.Log ("back " + backAttached);
+		float distEnd = (inRope.transform.position - ropePieces[ropePieces.Length - 1].transform.position).magnitude;
+		float distBeg = (inRope.transform.position - ropePieces[0].transform.position).magnitude;
+		if(distEnd > 4 && distBeg > 4)
+			return null;
+		if(distEnd >distBeg )
 		{
-			if(ropePieces[i].Equals (inRope))
+			if(frontAttached == false)
 			{
-				Debug.Log ("returning front");
-					return ropePieces[0];
+				frontAttached = true;
+				return ropePieces[0];
 			}
-
+			else
+				return null;
 		}
-		Debug.Log("returning end");
-		return ropePieces[ropePieces.Length-1];
+		if(backAttached == false)
+		{
+			backAttached = true;
+			return ropePieces[ropePieces.Length - 1];
+		}
+		return null;
+	}
+
+	public void release(GameObject o)
+	{
+		if(o.Equals(ropePieces[0]))
+		   frontAttached = false;
+		if(o.Equals (ropePieces[ropePieces.Length - 1]))
+		   backAttached = false;
 	}
 }
