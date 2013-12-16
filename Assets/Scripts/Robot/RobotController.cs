@@ -7,12 +7,16 @@ public class RobotController : MonoBehaviour {
 	public float movespeed;
 	private float sight;
 	private float vel;
-	private float lastPos;
+	private Vector3 lastPos;
 	private float currentPos;
 	private float stopForce;
 	private float moveForce;
 	private int nodeNum = 0;
-	bool animate=true;
+	private bool sendMsg = true;
+	private int angleHelper=1;
+	//private float chaseTime = 0;
+	
+	bool animate = true;
 	enum States {Patrolling,Stop,Turning,Chase,Return};
 	States state = States.Turning;
 
@@ -54,7 +58,7 @@ public class RobotController : MonoBehaviour {
 			state = States.Stop;
 			animate=true;
 		}
-		else if(seePlayer()) {
+		else if(detectPlayer()) {
 			state = States.Chase;
 		}
 		else {
@@ -75,7 +79,7 @@ public class RobotController : MonoBehaviour {
 			state = States.Turning;
 			NextNode();
 		}
-		else if(seePlayer()) {
+		else if(detectPlayer()) {
 			state = States.Chase;
 		}
 		else {
@@ -96,22 +100,61 @@ public class RobotController : MonoBehaviour {
 			animation.Play("Start Moving");
 			state = States.Patrolling;
 		}
-		else if(seePlayer()) {
+		else if(detectPlayer()) {
 			state = States.Chase;
 		}
 		else {
 			//ACTION
-			transform.RotateAround(transform.position, Vector3.up, 2f);
+			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
 		}
 
 	}
 
 	// IGNORE FOR NOW!
 	void ChasePlayer() {
-		//Debug.Log("I SEE YOU! :D");
+
+		float distance = moveVector(GameObject.Find("Player").transform).magnitude;
+		float angle = turnAngle(GameObject.Find("Player").transform);
+
+		if(Mathf.Abs(angle) < 45 && distance < 8){
+			// Moving
+			Vector3 moveDir = moveVector(GameObject.Find("Player").transform);
+			moveDir.Normalize();
+			vel = rigidbody.velocity.magnitude;
+			moveForce = movespeed - vel;
+			rigidbody.AddRelativeForce(moveDir * moveForce);
+			lastPos = GameObject.Find("Player").transform.position;
+			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
+		}
+		else{
+			Debug.Log("I GOT HERE! :(");
+			state = States.Return;
+		}
+
+		// Chasing the player
+
+
+		// If robot catches player, then it explodes
+		if (moveVector(GameObject.Find("Player").transform).magnitude < 1f ) {
+			Explode();
+		}
+	}
+
+	void Explode() {
+		if (sendMsg) {
+			sendMsg=false;
+			var hitColliders = Physics.OverlapSphere(transform.position, 1f);
+			for (var i = 0; i < hitColliders.Length; i++) {
+				if (hitColliders[i] != gameObject) {
+					hitColliders[i].SendMessage("Explode");
+				}
+			}
+		}
+		Destroy(gameObject);
 	}
 
 	void ReturnRobits() {
+		Explode();
 	}
 
 	//HELPING FUNCTIONS FOR THINGS
@@ -125,13 +168,30 @@ public class RobotController : MonoBehaviour {
 	}
 
 	Vector3 moveVector(Transform node) {
-		Vector3 moveDir = node.position - transform.position;
-		moveDir.y = 0;
-		moveDir = transform.InverseTransformDirection(moveDir);
-		return moveDir;
+		Vector3 dir = node.position - transform.position;
+		dir.y = 0;
+		dir = transform.InverseTransformDirection(dir);
+		return dir;
+	}
+
+	void setAngleHelper(Transform node){
+		Vector3 turnDir = node.position - transform.position;
+		turnDir.y = 0;
+		turnDir = transform.InverseTransformDirection(turnDir);
+		turnDir.Normalize();
+
+		Vector3 cross=Vector3.Cross(Vector3.left,turnDir);
+		if (cross.y < 0){
+			angleHelper=-1;
+		}
+		else{
+			angleHelper=1;
+		}
+
 	}
 
 	float turnAngle(Transform node) {
+		setAngleHelper(node);
 		Vector3 turnDir = node.position - transform.position;
 		turnDir.y = 0;
 		turnDir = transform.InverseTransformDirection(turnDir);
@@ -139,17 +199,15 @@ public class RobotController : MonoBehaviour {
 		return turnAngle;
 	}
 
-	bool seePlayer() {
+	bool detectPlayer(){
 		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
 		turnDir.y = 0;
 		sight = Vector3.Angle(Vector3.left, transform.InverseTransformDirection(turnDir));
-
+		
 		RaycastHit hit;
-		if(Physics.Linecast(transform.position,GameObject.Find("Player").transform.position,out hit))
+		if(Physics.Linecast(transform.position,GameObject.Find("Player").transform.position, out hit))
 		{
-			//Debug.DrawLine(ray.origin, hit.point);
-			//Debug.Log(hit.collider.gameObject.name);
-			if ((Mathf.Abs(sight)< 5) && hit.collider.gameObject.name == "Player")
+			if ((Mathf.Abs(sight) < 15) && hit.collider.gameObject.name == "Player")
 			{
 				return true;
 			}
