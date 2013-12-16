@@ -144,19 +144,16 @@ public class RobotController : MonoBehaviour {
 		turnDir.y = 0;
 		sight = Vector3.Angle(Vector3.left, transform.InverseTransformDirection(turnDir));
 
-		Ray ray = new Ray(transform.position, turnDir);
 		RaycastHit hit;
-
-		if (Physics.Raycast(ray, out hit))
+		if(Physics.Linecast(transform.position,GameObject.Find("Player").transform.position,out hit))
 		{
-			Debug.DrawLine(ray.origin, hit.point);
-			Debug.Log(hit.collider.gameObject.name);
-
+			//Debug.DrawLine(ray.origin, hit.point);
+			//Debug.Log(hit.collider.gameObject.name);
 			if ((Mathf.Abs(sight)< 5) && hit.collider.gameObject.name == "Player")
 			{
 				return true;
 			}
 		}
-			return false;
+		return false;
 	}
 }
