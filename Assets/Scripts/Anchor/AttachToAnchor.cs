@@ -9,6 +9,8 @@ public class AttachToAnchor : MonoBehaviour {
 	public GameObject attachedObject;
 	public FixedJoint f;
 
+	public bool breakjoint = false;
+
 	public void Attach(GameObject toAttach)
 	{
 		if(!attached)
@@ -24,6 +26,8 @@ public class AttachToAnchor : MonoBehaviour {
 		f = gameObject.AddComponent<FixedJoint>();
 		f.connectedBody = attachedObject.rigidbody;
 		attached = true;
+
+		if(breakjoint) f.breakForce=2000f;
 	}
 
 	public void Detach()

@@ -41,7 +41,7 @@ public class CreateRope : MonoBehaviour {
 			segment.radius = ropeThickness;
 			segment.direction = 2;
 			segment.height = segmentLength;
-			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLength));
+			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLength)); //tiny spawn
 
 
 			//incoming magic layer number

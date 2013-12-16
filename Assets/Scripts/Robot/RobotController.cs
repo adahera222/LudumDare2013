@@ -113,17 +113,17 @@ public class RobotController : MonoBehaviour {
 	// IGNORE FOR NOW!
 	void ChasePlayer() {
 
-		float distance = moveVector(GameObject.Find("Player").transform).magnitude;
-		float angle = turnAngle(GameObject.Find("Player").transform);
+		float distance = moveVector(GameObject.Find("Player(Clone)").transform).magnitude;
+		float angle = turnAngle(GameObject.Find("Player(Clone)").transform);
 
 		if(Mathf.Abs(angle) < 45 && distance < 8){
 			// Moving
-			Vector3 moveDir = moveVector(GameObject.Find("Player").transform);
+			Vector3 moveDir = moveVector(GameObject.Find("Player(Clone)").transform);
 			moveDir.Normalize();
 			vel = rigidbody.velocity.magnitude;
 			moveForce = movespeed - vel;
 			rigidbody.AddRelativeForce(moveDir * moveForce);
-			lastPos = GameObject.Find("Player").transform.position;
+			lastPos = GameObject.Find("Player(Clone)").transform.position;
 			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
 		}
 		else{
@@ -135,7 +135,7 @@ public class RobotController : MonoBehaviour {
 
 
 		// If robot catches player, then it explodes
-		if (moveVector(GameObject.Find("Player").transform).magnitude < 1f ) {
+		if (moveVector(GameObject.Find("Player(Clone)").transform).magnitude < 1f ) {
 			Explode();
 		}
 	}
@@ -200,14 +200,14 @@ public class RobotController : MonoBehaviour {
 	}
 
 	bool detectPlayer(){
-		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
+		Vector3 turnDir = GameObject.Find("Player(Clone)").transform.position - transform.position;
 		turnDir.y = 0;
 		sight = Vector3.Angle(Vector3.left, transform.InverseTransformDirection(turnDir));
 		
 		RaycastHit hit;
-		if(Physics.Linecast(transform.position,GameObject.Find("Player").transform.position, out hit))
+		if(Physics.Linecast(transform.position,GameObject.Find("Player(Clone)").transform.position, out hit))
 		{
-			if ((Mathf.Abs(sight) < 15) && hit.collider.gameObject.name == "Player")
+			if ((Mathf.Abs(sight) < 15) && hit.collider.gameObject.name == "Player(Clone)")
 			{
 				return true;
 			}

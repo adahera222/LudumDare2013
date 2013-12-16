@@ -10,10 +10,10 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2013
 		Month: 12
-		Day: 15
-		Hour: 01
-		Minute: 55
-		Second: 21
+		Day: 16
+		Hour: 14
+		Minute: 46
+		Second: 23
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2013-12-15 01:55:21:000"
+CreationTime: "2013-12-16 14:46:23:000"
 Creator: "Blender version 2.69 (sub 0)"
 
 ; Object definitions
@@ -699,20 +699,9 @@ Objects:  {
 			         1.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000,
 			         1.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000
 		}
-		LayerElementSmoothing: 0 {
-			Version: 102
-			Name: ""
-			MappingInformationType: "ByPolygon"
-			ReferenceInformationType: "Direct"
-			Smoothing: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-			           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-			           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-			           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-			           0,0,0,0,0,0,0,0,0,0,0,0
-		}
 		LayerElementUV: 0 {
 			Version: 101
-			Name: "UV coord"
+			Name: "UVMap"
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
 			UV: 0.333766,0.000573,0.999705,0.999906,0.667242,0.999426,0.667257,0.000371,0.665280,0.335342,0.665527,0.665227,
@@ -761,10 +750,6 @@ Objects:  {
 			Version: 100
 			LayerElement:  {
 				Type: "LayerElementNormal"
-				TypedIndex: 0
-			}
-			LayerElement:  {
-				Type: "LayerElementSmoothing"
 				TypedIndex: 0
 			}
 			LayerElement:  {
@@ -2169,18 +2154,18 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
-	Material: "Material::Green_Anchor", "" {
+	Material: "Material::Orange_Anchor", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
 		Properties60:  {
 			Property: "ShadingModel", "KString", "", "Lambert"
 			Property: "MultiLayer", "bool", "",0
-			Property: "EmissiveColor", "ColorRGB", "",0.0000,0.8000,0.0643
+			Property: "EmissiveColor", "ColorRGB", "",1.0000,0.6889,0.0000
 			Property: "EmissiveFactor", "double", "",0.0000
 			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
 			Property: "AmbientFactor", "double", "",1.0000
-			Property: "DiffuseColor", "ColorRGB", "",0.0000,0.8000,0.0643
+			Property: "DiffuseColor", "ColorRGB", "",1.0000,0.6889,0.0000
 			Property: "DiffuseFactor", "double", "",0.8000
 			Property: "Bump", "Vector3D", "",0,0,0
 			Property: "TransparentColor", "ColorRGB", "",1,1,1
@@ -2192,7 +2177,7 @@ Objects:  {
 			Property: "ReflectionFactor", "double", "",1
 			Property: "Emissive", "ColorRGB", "",0,0,0
 			Property: "Ambient", "ColorRGB", "",1.0,1.0,1.0
-			Property: "Diffuse", "ColorRGB", "",0.0,0.8,0.1
+			Property: "Diffuse", "ColorRGB", "",1.0,0.7,0.0
 			Property: "Specular", "ColorRGB", "",1.0,1.0,1.0
 			Property: "Shininess", "double", "",12.3
 			Property: "Opacity", "double", "",1.0
@@ -2329,7 +2314,7 @@ Relations:  {
 	}
 	Material: "Material::Explode_Wheel", "" {
 	}
-	Material: "Material::Green_Anchor", "" {
+	Material: "Material::Orange_Anchor", "" {
 	}
 	Deformer: "Deformer::Skin Cube_001", "Skin" {
 	}
@@ -2350,7 +2335,7 @@ Connections:  {
 	Connect: "OO", "Material::Explode_Legs", "Model::Cube_001"
 	Connect: "OO", "Material::Explode_Ports", "Model::Cube_001"
 	Connect: "OO", "Material::Explode_Wheel", "Model::Cube_001"
-	Connect: "OO", "Material::Green_Anchor", "Model::Cube_001"
+	Connect: "OO", "Material::Orange_Anchor", "Model::Cube_001"
 	Connect: "OO", "Deformer::Skin Cube_001", "Model::Cube_001"
 	Connect: "OO", "SubDeformer::Cluster Cube_001 Suspension", "Deformer::Skin Cube_001"
 	Connect: "OO", "SubDeformer::Cluster Cube_001 Body", "Deformer::Skin Cube_001"

@@ -21,8 +21,8 @@ public class RopeSpawner : MonoBehaviour {
 		rope = new GameObject("Rope Manager");
 		CreateRope ropecomponent = rope.AddComponent<CreateRope>();
 		ropecomponent.position = transform.position;
-		ropecomponent.ropeLength = 40;
-		ropecomponent.segmentLength = 0.1f;
+		ropecomponent.ropeLength = 20;
+		ropecomponent.segmentLength = 0.2f;
 		ropecomponent.ropeThickness = 0.1f;
 
 		RopeRenderer vis = rope.AddComponent<RopeRenderer>();
