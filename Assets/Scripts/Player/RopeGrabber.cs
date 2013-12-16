@@ -4,7 +4,8 @@ using System.Collections;
 public class RopeGrabber : MonoBehaviour {
 
 	public Vector3 positionToAfix = new Vector3(1f, 0, 1f);
-	public float arbitraryDistanceLimit = 4;
+	public float arbitraryDistanceLimit = 6;
+	public float arbitraryAttachDistance = 6;
 	public Camera thisCamera;
 
 	private GameObject cursorBullshit;
@@ -18,6 +19,12 @@ public class RopeGrabber : MonoBehaviour {
 		Rigidbody b = cursorBullshit.AddComponent<Rigidbody>();
 		b.isKinematic = true;
 		cursorBullshit.layer = 10;
+		GameObject cursorRender = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cursorRender.collider.enabled = false;
+		cursorRender.renderer.enabled = false;
+		cursorRender.transform.parent = cursorBullshit.transform;
+		cursorRender.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
+		cursorRender.transform.localPosition = Vector3.zero;
 		cursorBullshit.transform.parent = thisCamera.transform;
 		cursorBullshit.transform.localPosition = positionToAfix;
 		jointDicks = null;
@@ -28,12 +35,11 @@ public class RopeGrabber : MonoBehaviour {
 		Screen.showCursor = false;
 		if(Input.GetMouseButtonDown(0) && jointDicks == null)
 		{
-			Ray ray = thisCamera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2));
+			Ray ray = thisCamera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2,0 ));
 			RaycastHit hit;
 			if(Physics.Raycast (ray,out hit))
 			{
-				if(hit.collider.gameObject.layer == 9 &&
-				   (hit.collider.gameObject.transform.position - thisCamera.transform.position).magnitude < arbitraryDistanceLimit)
+				if(hit.collider.gameObject.layer == 9 && hit.distance < arbitraryDistanceLimit)
 				{
 					Debug.Log ("object connected");
 					jointDicks = hit.collider.transform.parent.gameObject.AddComponent<SpringJoint>();
@@ -47,13 +53,30 @@ public class RopeGrabber : MonoBehaviour {
 					jointDicks.breakTorque = 10000f;
 				}
 			}
-
 		}
 		if(jointDicks != null && Input.GetMouseButtonUp (0))
 		{
 			Debug.Log ("object should be dropped");
 			Destroy(jointDicks);
 			jointDicks = null;
+		}
+		if(jointDicks != null && Input.GetMouseButtonDown(1))
+		{
+			Debug.Log ("leftclick with rope in hand");
+			Ray ray = thisCamera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2));
+			RaycastHit hit;
+			if(Physics.Raycast (ray,out hit))
+			{
+				Debug.Log ("raycast hit");
+				if(hit.collider.gameObject.layer == 13 && hit.distance < arbitraryAttachDistance)
+				{
+					Debug.Log ("object should connect");
+					hit.collider.gameObject.SendMessage("Attach", 
+						GameObject.Find ("Rope").GetComponent<CreateRope>().getRopeSegment(jointDicks.gameObject));
+					Destroy (jointDicks);
+					jointDicks = null;
+				}
+			}
 		}
 	}
 }

@@ -5,18 +5,23 @@ public class CreateRope : MonoBehaviour {
 
 	public Vector3 position = new Vector3(0, 0, 0);
 	public int ropeLength = 24;
-	public float segmentLengthScale = .25f;
-	public float ropeThicknessScale = .05f;
+	public float segmentLength = .25f;
+	public float ropeThickness = .1f;
 	public float segmentSeperation = 0f;
 
 
 	private GameObject[] ropePieces;
 
 	void Start() {
+		Transform debug = new GameObject().transform;
 		ropePieces = new GameObject[ropeLength];
-		GameObject start = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		//GameObject start = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+		GameObject start = new GameObject();
+		CapsuleCollider segment = start.AddComponent<CapsuleCollider>();
+		segment.radius = ropeThickness;
+		segment.direction = 2;
+		segment.height = segmentLength;
 		start.transform.position = position;
-		start.transform.localScale = new Vector3(ropeThicknessScale,ropeThicknessScale,segmentLengthScale);
 		Rigidbody body = start.AddComponent<Rigidbody>();
 		body.mass = Mathf.Pow(ropeLength,-1);
 		body.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -26,9 +31,15 @@ public class CreateRope : MonoBehaviour {
 		ropePieces[0] = start;
 		GameObject newRope;
 		for(int i = 1; i < ropeLength; i++) {
-			newRope = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-			newRope.transform.localScale = new Vector3(ropeThicknessScale,ropeThicknessScale,segmentLengthScale);
-			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLengthScale));
+			start = ropePieces[i-1];
+			//newRope = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+			newRope = new GameObject();
+			segment = newRope.AddComponent<CapsuleCollider>();
+			segment.radius = ropeThickness;
+			segment.direction = 2;
+			segment.height = segmentLength;
+			newRope.transform.position = new Vector3(position.x, position.y, position.z+i*(segmentLength));
+
 
 			//incoming magic layer number
 			newRope.layer = 8;
@@ -39,8 +50,8 @@ public class CreateRope : MonoBehaviour {
 
 			ConfigurableJoint j = newRope.AddComponent<ConfigurableJoint>();
 			j.connectedBody = start.rigidbody;
-			j.connectedAnchor = new Vector3(0,0, -(segmentLengthScale)/2);
-			j.anchor = new Vector3(0,0, (segmentLengthScale)/2);
+			j.connectedAnchor = new Vector3(0,0, segment.height/2);
+			j.anchor = new Vector3(0,0, -segment.height/2);
 
 			SoftJointLimit limit = new SoftJointLimit();
 			limit.damper = 50;
@@ -51,21 +62,24 @@ public class CreateRope : MonoBehaviour {
 			j.xMotion = ConfigurableJointMotion.Limited;
 			j.yMotion = ConfigurableJointMotion.Limited;
 			j.zMotion = ConfigurableJointMotion.Limited;
-			start = newRope;
 
 			ropePieces[i] = newRope;
 		}
 		for(int i = 0; i < ropeLength; i++) {
+			ropePieces[i].transform.parent = debug;
 			GameObject child = new GameObject();
 			child.transform.parent = ropePieces[i].transform;
-			SphereCollider cap = child.AddComponent<SphereCollider>();
-			cap.center = ropePieces[i].transform.position;
-			cap.radius = segmentLengthScale * 1.1f;
+			child.transform.localPosition = Vector3.zero;
+			CapsuleCollider cap = child.AddComponent<CapsuleCollider>();
+			cap.center = Vector3.zero;
+			cap.radius = ropeThickness;
+			cap.height = segmentLength * 1.25f;
+			cap.direction = 2;
 			child.layer = 9;
 		}
 	}
 
-	void FixedUpdate() {
+	/*void FixedUpdate() {
 		GameObject  a;
 		GameObject b;
 
@@ -73,17 +87,39 @@ public class CreateRope : MonoBehaviour {
 			a = ropePieces[i-1];
 			b = ropePieces[i];
 			Vector3 distance = a.transform.TransformPoint(
-				new Vector3(0,0, (segmentLengthScale)/2)) - 
+				new Vector3(0,0, (segmentLength)/2)) - 
 			    b.transform.TransformPoint(
-				new Vector3(0,0, -(segmentLengthScale)/2));
+				new Vector3(0,0, -(segmentLength)/2));
 
 			a.rigidbody.AddForceAtPosition(
 				-distance.normalized * Mathf.Pow(distance.magnitude, 3)*30,
-			    a.transform.TransformPoint(new Vector3(0,0, (segmentLengthScale)/2)));
+			    a.transform.TransformPoint(new Vector3(0,0, (segmentLength)/2)));
 
 			b.rigidbody.AddForceAtPosition(
 				distance.normalized * Mathf.Pow(distance.magnitude, 3)*30,
-			    b.transform.TransformPoint(new Vector3(0,0, -(segmentLengthScale)/2)));
+			    b.transform.TransformPoint(new Vector3(0,0, -(segmentLength)/2)));
 		}
+	}*/
+	void Update()
+	{
+		for(int i = 0; i < ropePieces.Length - 1; i++)
+		{
+			Debug.DrawLine(ropePieces[i].transform.position, ropePieces[i+1].transform.position);
+		}
+	}
+
+	public GameObject getRopeSegment(GameObject inRope)
+	{
+		for(int i = 1; i < ropePieces.Length/2; i++)
+		{
+			if(ropePieces[i].Equals (inRope))
+			{
+				Debug.Log ("returning front");
+					return ropePieces[0];
+			}
+
+		}
+		Debug.Log("returning end");
+		return ropePieces[ropePieces.Length-1];
 	}
 }
