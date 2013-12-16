@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CheckpointManager : MonoBehaviour {
 
+	[HideInInspector]
 	public RopeSpawner activerope;
 
 	void Start () {

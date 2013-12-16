@@ -3,10 +3,11 @@ using System.Collections;
 
 public class RopeSpawner : MonoBehaviour {
 
+	public bool spawnAtStart;
 	public GameObject rope;
 
 	void Start() {
-		SpawnRope();
+		if (spawnAtStart) SpawnRope();
 	}
 
 	void SpawnRope() {

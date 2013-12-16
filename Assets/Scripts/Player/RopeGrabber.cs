@@ -19,11 +19,10 @@ public class RopeGrabber : MonoBehaviour {
 		cursorBullshit.name = "cursorBullshit";
 		Rigidbody b = cursorBullshit.AddComponent<Rigidbody>();
 		b.useGravity=false;
+		b.isKinematic=true;
 		cursorBullshit.layer = 10;
 		cursorBullshit.transform.parent = thisCamera.transform;
 		cursorBullshit.transform.localPosition = positionToAfix;
-		cursorBullshit.transform.parent = null;
-		cursorBullshit.AddComponent<FixedJoint>().connectedBody = rigidbody;
 		jointDicks = null;
 	}
 	
@@ -64,7 +63,7 @@ public class RopeGrabber : MonoBehaviour {
 				if(hit.collider.gameObject.layer == 13 && hit.distance < arbitraryAttachDistance)
 				{
 					jointDicks.connectedBody = null;
-					GameObject g = GameObject.Find ("Rope").GetComponent<CreateRope>().getRopeSegment(jointDicks.gameObject);
+					GameObject g = GetComponent<CheckpointManager>().activerope.rope.GetComponent<CreateRope>().getRopeSegment(jointDicks.gameObject);
 					if(g != null)
 					{
 						hit.collider.gameObject.SendMessage("Attach",g);
