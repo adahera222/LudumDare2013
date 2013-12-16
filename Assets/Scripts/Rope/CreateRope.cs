@@ -16,10 +16,10 @@ public class CreateRope : MonoBehaviour {
 
 
 	void Start() {
-		Transform debug = new GameObject().transform;
+		Transform debug = new GameObject("Rope Container").transform;
 		ropePieces = new GameObject[ropeLength];
 		//GameObject start = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-		GameObject start = new GameObject();
+		GameObject start = new GameObject("Rope Segment");
 		CapsuleCollider segment = start.AddComponent<CapsuleCollider>();
 		segment.radius = ropeThickness;
 		segment.direction = 2;
@@ -36,7 +36,7 @@ public class CreateRope : MonoBehaviour {
 		for(int i = 1; i < ropeLength; i++) {
 			start = ropePieces[i-1];
 			//newRope = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-			newRope = new GameObject();
+			newRope = new GameObject("Rope Segment");
 			segment = newRope.AddComponent<CapsuleCollider>();
 			segment.radius = ropeThickness;
 			segment.direction = 2;
@@ -70,12 +70,12 @@ public class CreateRope : MonoBehaviour {
 		}
 		for(int i = 0; i < ropeLength; i++) {
 			ropePieces[i].transform.parent = debug;
-			GameObject child = new GameObject();
+			GameObject child = new GameObject("Grab Collider");
 			child.transform.parent = ropePieces[i].transform;
 			child.transform.localPosition = Vector3.zero;
 			CapsuleCollider cap = child.AddComponent<CapsuleCollider>();
 			cap.center = Vector3.zero;
-			cap.radius = ropeThickness;
+			cap.radius = ropeThickness * 2;
 			cap.height = segmentLength * 1.25f;
 			cap.direction = 2;
 			child.layer = 9;
@@ -137,10 +137,5 @@ public class CreateRope : MonoBehaviour {
 		   frontAttached = false;
 		if(o.Equals (ropePieces[ropePieces.Length - 1]))
 		   backAttached = false;
-	}
-
-	public void Die() {
-		GameObject.Find("Player(Clone)").GetComponent<CheckpointManager>().activecheckpoint.GetComponentInChildren<RopeSpawner>().SpawnRope();
-		Destroy (this);
 	}
 }

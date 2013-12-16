@@ -7,8 +7,7 @@ public class CheckPointVolume : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if(other.gameObject.layer != 8) return;
-
 		passed = true;
-		GameObject.Find("Player(Clone)").GetComponent<CheckpointManager>().activecheckpoint = gameObject;
+		GameObject.Find("Player(Clone)").GetComponent<CheckpointManager>().setCheckpoint(gameObject);
 	}
 }

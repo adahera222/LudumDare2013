@@ -30,7 +30,7 @@ public class RopeRenderer : MonoBehaviour {
 		GetComponent<MeshRenderer>().materials = NSFC;
 	}
 
-	void LateUpdate () {
+	void Update () {
 
 
 		vert.Clear();
@@ -98,8 +98,9 @@ public class RopeRenderer : MonoBehaviour {
 			uvs.Add(new Vector2(0,1));
 		}
 
-		ropemesh.triangles = tris.ToArray();
+
 		ropemesh.vertices = vert.ToArray();
+		ropemesh.triangles = tris.ToArray();
 		ropemesh.uv = uvs.ToArray();
 
 		ropemesh.RecalculateBounds();

@@ -31,7 +31,7 @@ public class AttachToAnchor : MonoBehaviour {
 		attached = false;
 		Destroy (f);
 		f = null;
-		GameObject.Find("Player").GetComponent<CheckpointManager>().activerope.rope.GetComponent<CreateRope>().release(attachedObject);
+		GameObject.Find("Rope Manager").GetComponent<CreateRope>().release(attachedObject);
 		attachedObject = null;
 	}
 }

@@ -8,11 +8,13 @@ public class RopeGrabber : MonoBehaviour {
 	public float arbitraryAttachDistance = 6;
 	public Camera thisCamera;
 
+	[HideInInspector]
+	public bool isGrabbing;
+
 	private GameObject cursorBullshit;
 	private SpringJoint jointDicks;
 	private FixedJoint frontJoint;
 
-	// Use this for initialization
 	void Awake () {
 		Screen.lockCursor = true;
 		cursorBullshit = new GameObject();
@@ -24,9 +26,10 @@ public class RopeGrabber : MonoBehaviour {
 		cursorBullshit.transform.parent = thisCamera.transform;
 		cursorBullshit.transform.localPosition = positionToAfix;
 		jointDicks = null;
+
+		isGrabbing = false;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		Screen.showCursor = false;
 		if(Input.GetMouseButtonDown(0) && jointDicks == null)
@@ -46,6 +49,8 @@ public class RopeGrabber : MonoBehaviour {
 					jointDicks.maxDistance = .3f;
 					jointDicks.breakForce = 10000f;
 					jointDicks.breakTorque = 10000f;
+
+					isGrabbing = true;
 				}
 			}
 		}
@@ -53,6 +58,8 @@ public class RopeGrabber : MonoBehaviour {
 		{
 			Destroy(jointDicks);
 			jointDicks = null;
+
+			isGrabbing = false;
 		}
 		if(jointDicks != null && Input.GetMouseButtonDown(1))
 		{
@@ -63,7 +70,7 @@ public class RopeGrabber : MonoBehaviour {
 				if(hit.collider.gameObject.layer == 13 && hit.distance < arbitraryAttachDistance)
 				{
 					jointDicks.connectedBody = null;
-					GameObject g = GetComponent<CheckpointManager>().activerope.rope.GetComponent<CreateRope>().getRopeSegment(jointDicks.gameObject);
+					GameObject g = GameObject.Find("Rope Manager").GetComponent<CreateRope>().getRopeSegment(jointDicks.gameObject);
 					if(g != null)
 					{
 						hit.collider.gameObject.SendMessage("Attach",g);

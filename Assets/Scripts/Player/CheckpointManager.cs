@@ -16,11 +16,30 @@ public class CheckpointManager : MonoBehaviour {
 		setCheckpoint(GameObject.Find("TestSpawner"));
 	}
 
-	void setCheckpoint(GameObject obj) {
+	public void setCheckpoint(GameObject obj) {
 		activecheckpoint = obj;
 		activerope = activecheckpoint.GetComponentInChildren<RopeSpawner>();
-		Debug.Log(activerope.ToString());
 		activeplayer = activecheckpoint.GetComponentInChildren<PlayerSpawner>();
-		Debug.Log(activeplayer.ToString());
+	}
+
+	public void ResetRope() {
+		StartCoroutine("TimedResetRope");
+	}
+
+	IEnumerator TimedResetRope() {
+		Destroy(GameObject.Find("Rope Manager"));
+		Destroy(GameObject.Find("Rope Container"));
+
+		yield return new WaitForSeconds(1f);
+
+		activerope.SpawnRope();
+	}
+
+	public void ResetPlayer() {
+		gameObject.transform.position = activeplayer.transform.position;
+	}
+
+	void Update() {
+		if(Input.GetKeyDown(KeyCode.R)) ResetRope();
 	}
 }

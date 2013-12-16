@@ -492,7 +492,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 217242698}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106709}
-  m_LocalPosition: {x: 18.1704979, y: -.740702391, z: -4.74707603}
+  m_LocalPosition: {x: 16.2926331, y: .916124344, z: -.881660938}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 411730876}
@@ -1409,6 +1409,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 918592862}
   - 65: {fileID: 918592863}
+  - 114: {fileID: 918592864}
   m_Layer: 0
   m_Name: cliff death
   m_TagString: Untagged
@@ -1423,7 +1424,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 918592861}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.01183939, y: -11.5576706, z: -7.55154419}
+  m_LocalPosition: {x: -37.7396698, y: -5.24079514, z: -7.55154419}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1492596305}
@@ -1439,6 +1440,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 100, y: 1, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &918592864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 918592861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ff2ea8fe18d48808508f5ab8b8e1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &939489226
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,7 +2581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnAtStart: 1
-  prefab: {fileID: 400002, guid: 2c4665e342e0c4b73bab23f5e0737e7c, type: 2}
+  prefab: {fileID: 400002, guid: 1806681d08c9241bdb04a9bab082753e, type: 2}
 --- !u!1 &1850452702
 GameObject:
   m_ObjectHideFlags: 0

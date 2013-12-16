@@ -10,11 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
 		if(spawnAtStart) SpawnPlayer();
 	}
 
-	void SpawnPlayer() {
+	public void SpawnPlayer() {
 		Instantiate(prefab, transform.position, transform.rotation);
-	}
-
-	void setActive() {
-
 	}
 }

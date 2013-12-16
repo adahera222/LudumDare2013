@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 20: {fileID: 2000000}
   - 81: {fileID: 8100000}
+  - 92: {fileID: 9200000}
   m_Layer: 11
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -31,6 +32,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400008}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -98,8 +100,8 @@ Rigidbody:
   m_GameObject: {fileID: 100002}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0
+  m_Drag: 2
+  m_AngularDrag: .0500000007
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -107,6 +109,13 @@ Rigidbody:
   m_CollisionDetection: 0
 --- !u!81 &8100000
 AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+--- !u!92 &9200000
+Behaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -147,6 +156,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activerope: {fileID: 0}
+  activeplayer: {fileID: 0}
+  activecheckpoint: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,6 +173,20 @@ MonoBehaviour:
   arbitraryDistanceLimit: 6
   arbitraryAttachDistance: 6
   thisCamera: {fileID: 2000000}
+  isGrabbing: 0
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2cdbdb55d8864fe5942ee3a2b939d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activemat: {fileID: 2800000, guid: b646f810d13764d5dad9116271c8b30b, type: 3}
+  inactivemat: {fileID: 2800000, guid: 45a62c2e7f71b4644948835f3c769d6b, type: 3}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
