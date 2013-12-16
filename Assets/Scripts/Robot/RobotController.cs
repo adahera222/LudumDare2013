@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class RobotController : MonoBehaviour {
 	public List<Transform> pathNodes= new List<Transform>();
 	public float movespeed;
-	public float sight;
+	private float sight;
 	private float vel;
 	private float lastPos;
 	private float currentPos;
@@ -21,9 +21,6 @@ public class RobotController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-
-		//Debug.Log(state);
-
 		switch(state)
 		{
 			case States.Patrolling:
@@ -49,8 +46,6 @@ public class RobotController : MonoBehaviour {
 
 		//EDGE CONDIONTION
 		float distance = moveVector(pathNodes[nodeNum]).magnitude;
-		//float vel = rigidbody.velocity.magnitude;
-		//float stopDistance= Mathf.Pow(vel,2f)/(2*movespeed);
 		if(distance<1.2f&&animate){
 			animation.Play("Stop Moving");
 			animate=false;
@@ -113,7 +108,7 @@ public class RobotController : MonoBehaviour {
 
 	// IGNORE FOR NOW!
 	void ChasePlayer() {
-		Debug.Log("I SEE YOU! :D");
+		//Debug.Log("I SEE YOU! :D");
 	}
 
 	void ReturnRobits() {
@@ -147,16 +142,17 @@ public class RobotController : MonoBehaviour {
 	bool seePlayer() {
 		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
 		turnDir.y = 0;
-//		float disToPlayer=turnDir.magnitude;
-		turnDir = transform.InverseTransformDirection(turnDir);
-		sight = Vector3.Angle(Vector3.left,turnDir);
+		sight = Vector3.Angle(Vector3.left, transform.InverseTransformDirection(turnDir));
 
-		Ray ray = new Ray(GameObject.Find("Player").transform.position, transform.position);
+		Ray ray = new Ray(transform.position, turnDir);
 		RaycastHit hit;
 
-		if (Physics.Raycast (ray, out hit))
+		if (Physics.Raycast(ray, out hit))
 		{
-			if ((Mathf.Abs(sight)< 5) && hit.collider.gameObject.layer == 11)
+			Debug.DrawLine(ray.origin, hit.point);
+			Debug.Log(hit.collider.gameObject.name);
+
+			if ((Mathf.Abs(sight)< 5) && hit.collider.gameObject.name == "Player")
 			{
 				return true;
 			}
