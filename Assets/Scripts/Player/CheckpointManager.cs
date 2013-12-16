@@ -6,11 +6,21 @@ public class CheckpointManager : MonoBehaviour {
 	[HideInInspector]
 	public RopeSpawner activerope;
 
-	void Start () {
-		activerope = GameObject.Find("Spawner").GetComponent<RopeSpawner>();
+	[HideInInspector]
+	public PlayerSpawner activeplayer;
+
+	[HideInInspector]
+	public GameObject activecheckpoint;
+
+	void Awake () {
+		setCheckpoint(GameObject.Find("TestSpawner"));
 	}
-	
-	void Update () {
-	
+
+	void setCheckpoint(GameObject obj) {
+		activecheckpoint = obj;
+		activerope = activecheckpoint.GetComponentInChildren<RopeSpawner>();
+		Debug.Log(activerope.ToString());
+		activeplayer = activecheckpoint.GetComponentInChildren<PlayerSpawner>();
+		Debug.Log(activeplayer.ToString());
 	}
 }

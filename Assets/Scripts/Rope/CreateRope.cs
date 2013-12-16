@@ -138,4 +138,9 @@ public class CreateRope : MonoBehaviour {
 		if(o.Equals (ropePieces[ropePieces.Length - 1]))
 		   backAttached = false;
 	}
+
+	public void Die() {
+		GameObject.Find("Player(Clone)").GetComponent<CheckpointManager>().activecheckpoint.GetComponentInChildren<RopeSpawner>().SpawnRope();
+		Destroy (this);
+	}
 }

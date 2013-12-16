@@ -7,10 +7,14 @@ public class PlayerSpawner : MonoBehaviour {
 	public Transform prefab;
 
 	void Start () {
-		//dont need spawn points rn
+		if(spawnAtStart) SpawnPlayer();
 	}
 
 	void SpawnPlayer() {
-		Instantiate(prefab, Vector3.zero, Quaternion.identity);
+		Instantiate(prefab, transform.position, transform.rotation);
+	}
+
+	void setActive() {
+
 	}
 }

@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 public class RopeSpawner : MonoBehaviour {
 
 	public bool spawnAtStart;
 	public GameObject rope;
+	public Material mat;
 
 	void Start() {
 		if (spawnAtStart) SpawnRope();
 	}
 
-	void SpawnRope() {
+	public void SpawnRope() {
+		Debug.Log ("Spawn rope called");
 		rope = new GameObject();
 		CreateRope ropecomponent = rope.AddComponent<CreateRope>();
 		ropecomponent.position = transform.position;
@@ -20,5 +23,6 @@ public class RopeSpawner : MonoBehaviour {
 
 		RopeRenderer vis = rope.AddComponent<RopeRenderer>();
 		vis.RopeWidth = 0.1f;
+		vis.mat = mat;
 	}
 }

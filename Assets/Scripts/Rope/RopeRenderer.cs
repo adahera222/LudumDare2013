@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class RopeRenderer : MonoBehaviour {
 
 	public float RopeWidth;
+	public Material mat;
 
 	List<Vector3> vert;
 	List<int> tris;
@@ -24,6 +25,9 @@ public class RopeRenderer : MonoBehaviour {
 
 		ropemesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = ropemesh;
+		Material[] NSFC = GetComponent<MeshRenderer>().materials;
+		NSFC[0] = mat;
+		GetComponent<MeshRenderer>().materials = NSFC;
 	}
 
 	void LateUpdate () {
