@@ -12,6 +12,7 @@ public class RobotController : MonoBehaviour {
 	private float stopForce;
 	private float moveForce;
 	private int nodeNum = 0;
+	bool animate=true;
 	enum States {Patrolling,Stop,Turning,Chase,Return};
 	States state = States.Turning;
 
@@ -20,6 +21,8 @@ public class RobotController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+
+		//Debug.Log(state);
 
 		switch(state)
 		{
@@ -43,13 +46,18 @@ public class RobotController : MonoBehaviour {
 
 	//STATES FOR A ROBITS
 	void PatrolRobit() {
+
 		//EDGE CONDIONTION
 		float distance = moveVector(pathNodes[nodeNum]).magnitude;
 		//float vel = rigidbody.velocity.magnitude;
 		//float stopDistance= Mathf.Pow(vel,2f)/(2*movespeed);
-		if(distance < 0.35f){
+		if(distance<1.2f&&animate){
+			animation.Play("Stop Moving");
+			animate=false;
+		}
+		if(distance < 0.2f){
 			state = States.Stop;
-			//Debug.Log("velocity of stop is :"+rigidbody.velocity);
+			animate=true;
 		}
 		else if(seePlayer()) {
 			state = States.Chase;
@@ -59,9 +67,8 @@ public class RobotController : MonoBehaviour {
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
 			moveDir.Normalize();
 			vel = rigidbody.velocity.magnitude;
-			//moveForce=Mathf.Pow(movespeed,2f)-Mathf.Pow(velocity,2f)/moveddistance ;
 			moveForce = movespeed - vel;
-			rigidbody.AddRelativeForce(moveDir * movespeed);
+			rigidbody.AddRelativeForce(moveDir * moveForce);
 		}
 	}
 
@@ -69,6 +76,7 @@ public class RobotController : MonoBehaviour {
 		//EDGE CONDIONTION
 		float distance = moveVector(pathNodes[nodeNum]).magnitude;
 		if(distance < 0.1f) {
+			//animation.Play("Start Moving");
 			state = States.Turning;
 			NextNode();
 		}
@@ -80,7 +88,7 @@ public class RobotController : MonoBehaviour {
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
 			moveDir.Normalize();
 			vel = rigidbody.velocity.magnitude;
-			stopForce = -Mathf.Pow(vel,2f)/(2*Mathf.Abs(distance));
+			stopForce = -Mathf.Pow(vel, 2f) / (2 * Mathf.Abs(distance));
 			rigidbody.AddRelativeForce(moveDir * stopForce);
 		}
 	
@@ -90,6 +98,7 @@ public class RobotController : MonoBehaviour {
 		//EDGE CONDIONTION
 		float angle = turnAngle(pathNodes[nodeNum]);
 		if(angle < 2f) {
+			animation.Play("Start Moving");
 			state = States.Patrolling;
 		}
 		else if(seePlayer()) {
@@ -112,7 +121,7 @@ public class RobotController : MonoBehaviour {
 
 	//HELPING FUNCTIONS FOR THINGS
 	void NextNode() {
-		if (nodeNum == pathNodes.Count - 1){
+		if (nodeNum == pathNodes.Count - 1) {
 			nodeNum = 0;
 		}
 		else {
@@ -131,23 +140,23 @@ public class RobotController : MonoBehaviour {
 		Vector3 turnDir = node.position - transform.position;
 		turnDir.y = 0;
 		turnDir = transform.InverseTransformDirection(turnDir);
-		float turnAngle = Vector3.Angle(Vector3.forward,turnDir);
+		float turnAngle = Vector3.Angle(Vector3.left,turnDir);
 		return turnAngle;
 	}
 
 	bool seePlayer() {
-		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
-		turnDir.y = 0;
-		turnDir = transform.InverseTransformDirection(turnDir);
-		sight = Vector3.Angle(Vector3.forward,turnDir);
-
-		if (sight < 1)
-		{
-			return true;
-		}
-		else
-		{
+//		Vector3 turnDir = GameObject.Find("Player").transform.position - transform.position;
+//		turnDir.y = 0;
+//		turnDir = transform.InverseTransformDirection(turnDir);
+//		sight = Vector3.Angle(Vector3.left,turnDir);
+//
+//		if (sight < 1)
+//		{
+//			return true;
+//		}
+//		else
+//		{
 			return false;
-		}
+//		}
 	}
 }
