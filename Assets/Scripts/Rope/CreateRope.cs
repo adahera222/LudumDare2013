@@ -9,8 +9,8 @@ public class CreateRope : MonoBehaviour {
 	public float ropeThickness = .1f;
 	public float segmentSeperation = 0f;
 
-
-	private GameObject[] ropePieces;
+	[HideInInspector]
+	public GameObject[] ropePieces;
 
 	void Start() {
 		Transform debug = new GameObject().transform;
