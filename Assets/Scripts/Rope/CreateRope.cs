@@ -7,7 +7,6 @@ public class CreateRope : MonoBehaviour {
 	public int ropeLength = 24;
 	public float segmentLength = .25f;
 	public float ropeThickness = .1f;
-	public float segmentSeperation = 0f;
 
 	[HideInInspector]
 	public GameObject[] ropePieces;
