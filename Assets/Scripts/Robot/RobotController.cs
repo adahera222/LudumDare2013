@@ -36,12 +36,12 @@ public class RobotController : MonoBehaviour {
 			case States.Turning:
 				TurnRobit();
 				break;
-			case States.Chase:
-				ChasePlayer();
-				break;
-			case States.Return:
-				ReturnRobits();
-				break;
+//			case States.Chase:
+//				ChasePlayer();
+//				break;
+//			case States.Return:
+//				ReturnRobits();
+//				break;
 		}
 	}
 
@@ -58,9 +58,9 @@ public class RobotController : MonoBehaviour {
 			state = States.Stop;
 			animate=true;
 		}
-		else if(detectPlayer()) {
-			state = States.Chase;
-		}
+//		else if(detectPlayer()) {
+//			state = States.Chase;
+//		}
 		else {
 			//ACTION
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
@@ -79,9 +79,9 @@ public class RobotController : MonoBehaviour {
 			state = States.Turning;
 			NextNode();
 		}
-		else if(detectPlayer()) {
-			state = States.Chase;
-		}
+//		else if(detectPlayer()) {
+//			state = States.Chase;
+//		}
 		else {
 			//ACTION
 			Vector3 moveDir = moveVector(pathNodes[nodeNum]);
@@ -100,9 +100,9 @@ public class RobotController : MonoBehaviour {
 			animation.Play("Start Moving");
 			state = States.Patrolling;
 		}
-		else if(detectPlayer()) {
-			state = States.Chase;
-		}
+//		else if(detectPlayer()) {
+//			state = States.Chase;
+//		}
 		else {
 			//ACTION
 			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
@@ -111,51 +111,51 @@ public class RobotController : MonoBehaviour {
 	}
 
 	// IGNORE FOR NOW!
-	void ChasePlayer() {
+//	void ChasePlayer() {
+//
+//		float distance = moveVector(GameObject.Find("Player(Clone)").transform).magnitude;
+//		float angle = turnAngle(GameObject.Find("Player(Clone)").transform);
+//
+//		if(Mathf.Abs(angle) < 45 && distance < 8){
+//			// Moving
+//			Vector3 moveDir = moveVector(GameObject.Find("Player(Clone)").transform);
+//			moveDir.Normalize();
+//			vel = rigidbody.velocity.magnitude;
+//			moveForce = movespeed - vel;
+//			rigidbody.AddRelativeForce(moveDir * moveForce);
+//			lastPos = GameObject.Find("Player(Clone)").transform.position;
+//			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
+//		}
+//		else{
+//			Debug.Log("I GOT HERE! :(");
+//			state = States.Return;
+//		}
+//
+//		// Chasing the player
+//
+//
+//		// If robot catches player, then it explodes
+//		if (moveVector(GameObject.Find("Player(Clone)").transform).magnitude < 1f ) {
+//			Explode();
+//		}
+//	}
 
-		float distance = moveVector(GameObject.Find("Player(Clone)").transform).magnitude;
-		float angle = turnAngle(GameObject.Find("Player(Clone)").transform);
+//	void Explode() {
+//		if (sendMsg) {
+//			sendMsg=false;
+//			var hitColliders = Physics.OverlapSphere(transform.position, 1f);
+//			for (var i = 0; i < hitColliders.Length; i++) {
+//				if (hitColliders[i] != gameObject) {
+//					hitColliders[i].SendMessage("Explode");
+//				}
+//			}
+//		}
+//		Destroy(gameObject);
+//	}
 
-		if(Mathf.Abs(angle) < 45 && distance < 8){
-			// Moving
-			Vector3 moveDir = moveVector(GameObject.Find("Player(Clone)").transform);
-			moveDir.Normalize();
-			vel = rigidbody.velocity.magnitude;
-			moveForce = movespeed - vel;
-			rigidbody.AddRelativeForce(moveDir * moveForce);
-			lastPos = GameObject.Find("Player(Clone)").transform.position;
-			transform.RotateAround(transform.position, Vector3.up, angleHelper*2f);
-		}
-		else{
-			Debug.Log("I GOT HERE! :(");
-			state = States.Return;
-		}
-
-		// Chasing the player
-
-
-		// If robot catches player, then it explodes
-		if (moveVector(GameObject.Find("Player(Clone)").transform).magnitude < 1f ) {
-			Explode();
-		}
-	}
-
-	void Explode() {
-		if (sendMsg) {
-			sendMsg=false;
-			var hitColliders = Physics.OverlapSphere(transform.position, 1f);
-			for (var i = 0; i < hitColliders.Length; i++) {
-				if (hitColliders[i] != gameObject) {
-					hitColliders[i].SendMessage("Explode");
-				}
-			}
-		}
-		Destroy(gameObject);
-	}
-
-	void ReturnRobits() {
-		Explode();
-	}
+//	void ReturnRobits() {
+//		Explode();
+//	}
 
 	//HELPING FUNCTIONS FOR THINGS
 	void NextNode() {
